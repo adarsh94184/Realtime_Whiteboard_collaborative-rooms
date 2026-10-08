@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { API_BASE_URL } from '../config/api';
 import { useNavigate } from 'react-router-dom';
 import { X, Folder, Calendar, ArrowRight, Trash2 } from 'lucide-react';
 
@@ -11,7 +12,7 @@ export const MyBoardsModal = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     if (isOpen && token) {
-      fetch('/api/boards/my-boards', {
+      fetch(`${API_BASE_URL}/boards/my-boards`, {
         headers: { Authorization: `Bearer ${token}` }
       })
         .then(res => res.json())
@@ -36,7 +37,7 @@ export const MyBoardsModal = ({ isOpen, onClose }) => {
   const handleDeleteRoom = async (roomId, e) => {
     e.stopPropagation();
     try {
-      await fetch(`/api/boards/${roomId}`, {
+      await fetch(`${API_BASE_URL}/boards/${roomId}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` }
       });

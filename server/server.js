@@ -24,10 +24,14 @@ process.on('unhandledRejection', (reason) => {
 const app = express();
 const server = http.createServer(app);
 
-// Enable CORS for frontend Vite dev server (port 5173 / default dynamic ports)
+// Configure CORS origins (supports env variable CLIENT_URL and dynamic frontend origins)
+const allowedOrigins = process.env.CLIENT_URL
+  ? [process.env.CLIENT_URL, 'http://localhost:5173', 'http://localhost:3000']
+  : '*';
+
 app.use(cors({
-  origin: '*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  origin: allowedOrigins,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true
 }));
 
@@ -47,11 +51,12 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Socket.IO Server configuration
+// Socket.IO Server configuration with CORS support
 const io = new Server(server, {
   cors: {
-    origin: '*',
-    methods: ['GET', 'POST']
+    origin: allowedOrigins,
+    methods: ['GET', 'POST'],
+    credentials: true
   },
   pingInterval: 10000,
   pingTimeout: 5000

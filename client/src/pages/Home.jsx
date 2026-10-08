@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { API_BASE_URL } from '../config/api';
 import { Sparkles, Plus, ArrowRight, ShieldCheck, Users, Zap, Layout, MonitorPlay, Layers } from 'lucide-react';
 
 export const Home = ({ onOpenAuth }) => {
@@ -16,7 +17,7 @@ export const Home = ({ onOpenAuth }) => {
     setLoading(true);
 
     try {
-      const res = await fetch('/api/boards/create', {
+      const res = await fetch(`${API_BASE_URL}/boards/create`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title: roomTitle || 'Collaborative Room' })
@@ -42,7 +43,7 @@ export const Home = ({ onOpenAuth }) => {
   const handleTemplateSelect = async (templateName) => {
     setLoading(true);
     try {
-      const res = await fetch('/api/boards/create', {
+      const res = await fetch(`${API_BASE_URL}/boards/create`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title: `${templateName} Canvas` })

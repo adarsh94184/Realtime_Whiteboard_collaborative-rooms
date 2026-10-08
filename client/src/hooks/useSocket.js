@@ -2,6 +2,7 @@ import { useEffect, useRef, useCallback } from 'react';
 import { io } from 'socket.io-client';
 import { useWhiteboard } from '../context/WhiteboardContext';
 import { useAuth } from '../context/AuthContext';
+import { BACKEND_URL } from '../config/api';
 
 export const useSocket = (targetRoomId) => {
   const socketRef = useRef(null);
@@ -19,8 +20,8 @@ export const useSocket = (targetRoomId) => {
   useEffect(() => {
     if (!targetRoomId) return;
 
-    // Connect socket
-    const socket = io(window.location.origin, {
+    // Connect socket to backend URL
+    const socket = io(BACKEND_URL, {
       transports: ['websocket', 'polling'],
       reconnectionAttempts: 10,
       reconnectionDelay: 1000
